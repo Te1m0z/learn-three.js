@@ -12,7 +12,7 @@ namespace Market_C_sharp
     public class Program
     {
 
-        // начало любой программы с функции Main // тест 2
+        // start for each programm beginswith Main function
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

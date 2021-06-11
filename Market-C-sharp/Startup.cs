@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-// моё пространство имён проекта (классы и тп)
+// my namespace places here - one of ways to encapsulate elements in component
 namespace Market_C_sharp
 {
     public class Startup
@@ -23,7 +23,7 @@ namespace Market_C_sharp
 
         public IConfiguration Configuration { get; }
 
-        // функция для регистрации плагинов/модулей
+        // function to register modules/plugins
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
@@ -32,10 +32,10 @@ namespace Market_C_sharp
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDeveloperExceptionPage(); // показывать ошибки
-            app.UseStatusCodePages(); // коды response
-            app.UseStaticFiles(); // css, картинки, статика
-            app.UseMvcWithDefaultRoute(); // отслеживание URL и работа с контроллерами
+            app.UseDeveloperExceptionPage(); // display errors
+            app.UseStatusCodePages(); // display response codes
+            app.UseStaticFiles(); // css, imgs, static
+            app.UseMvcWithDefaultRoute(); // track URL and working with controllers
         }
     }
 }
