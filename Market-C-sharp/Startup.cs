@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Market_C_sharp.Data.Interfaces;
+using Market_C_sharp.Data.mocks;
 
 
 // my namespace places here - one of ways to encapsulate elements in component
@@ -26,7 +28,8 @@ namespace Market_C_sharp
         // function to register modules/plugins
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddTransient<IAllcars, MockCars>();
+            services.AddTransient<ICarsCategory, MockCategory>();
             services.AddMvc();
         }
 

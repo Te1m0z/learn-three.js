@@ -7,8 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Market_C_sharp
-{
+namespace Market_C_sharp {
     public class Program
     {
 

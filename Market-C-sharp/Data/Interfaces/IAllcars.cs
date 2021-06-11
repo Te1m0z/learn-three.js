@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Market_C_sharp.Data.Interfaces
 {
-    interface IAllcars
+    public interface IAllcars
     {
         IEnumerable<Car> Cars { get; }
 
         IEnumerable<Car> getFavCars { get; set; }
 
         Car getObjectcar(int carId);
-
     }
 }
