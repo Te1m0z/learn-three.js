@@ -8,8 +8,9 @@
         flex-flow: row nowrap
         justify-content: space-between
         align-items: center
-        border: 1px solid red
+        // border: 1px solid red
         margin-top: 20px
+        color: var(--white)
 
         & .logotype
             display: flex
@@ -26,3 +27,29 @@
                 font-size: 1.85rem
                 vertical-align: middle
                 margin-left: 0.75rem
+        & .navigation
+            font-family: 'Poppins Medium', sans-serif,
+            font-size: 1rem
+            color: var(--grey)
+            & > *
+                margin-left: 30px
+                &:first-child
+                    margin-left: 0
+            & select
+                display: inline-block
+            & a, select
+                transition: 250ms ease 30ms
+                &:hover, &.active:hover
+                    color: var(--white)
+                &.active
+                    color: var(--blue)
+        & .account
+            display: flex
+            color: var(--grey)
+            & button + button
+                margin-left: 1.5rem
+            & .register-btn
+                background: var(--blue)
+                color: var(--white)
+                padding: 5px 25px
+                border-radius: 4px
