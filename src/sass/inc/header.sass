@@ -8,19 +8,14 @@
         flex-flow: row nowrap
         justify-content: space-between
         align-items: center
-        // border: 1px solid red
         margin-top: 20px
         color: var(--white)
 
         & .logotype
             display: flex
             align-items: center
-            // height: 42px
-            // align-content: center
-
             & img
                 max-height: 2.1rem
-            
             & span
                 font-family: "Poppins Bold", sans-serif
                 color: var(--white)
@@ -35,8 +30,27 @@
                 margin-left: 30px
                 &:first-child
                     margin-left: 0
-            & select
+            & .move-menu-wrapper
                 display: inline-block
+                & span
+                    transition: 250ms ease 30ms
+                    cursor: pointer
+                    position: relative
+                    &:hover, &.active:hover
+                        color: var(--white)
+                    &.active
+                        color: var(--blue)
+                    &::before
+                        content: ''
+                        position: absolute
+                        right: -15px
+                        top: 50%
+                        transform: translateY(-50%)
+                        width: 12px
+                        height: 8px
+                        background-image: url('../img/Down_arrow.png') no-repeat center
+                & .move-menu
+                    display: none
             & a, select
                 transition: 250ms ease 30ms
                 &:hover, &.active:hover
@@ -46,6 +60,10 @@
         & .account
             display: flex
             color: var(--grey)
+            & button
+                transition: 250ms ease 30ms
+                &:hover
+                    color: var(--white)
             & button + button
                 margin-left: 1.5rem
             & .register-btn
