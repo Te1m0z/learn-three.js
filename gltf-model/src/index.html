@@ -13,14 +13,24 @@
             box-sizing: border-box;
         }
         body {
-            height: 2000px;
+            height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            background: #ccc;
+        }
+
+        #preview {
+            width: 200px;
+            height: 250px;
+            /* border: 1px solid red; */
+            margin: auto;
         }
     </style>
 </head>
 
 <body>
 
+    <div id="preview"></div>
     <script type="module" src="./script.js"></script>
 </body>
 

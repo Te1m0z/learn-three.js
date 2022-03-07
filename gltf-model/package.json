@@ -1,8 +1,8 @@
 {
   "private": true,
-  "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
   },
   "dependencies": {
     "dat.gui": "^0.7.9",
