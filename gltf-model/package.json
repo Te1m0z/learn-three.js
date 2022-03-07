@@ -5,6 +5,7 @@
     "start": "parcel src/index.html"
   },
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "parcel": "^2.3.2",
     "three": "^0.138.2"
   }
