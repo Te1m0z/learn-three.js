@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "dependencies": {
+    "parcel": "^2.3.2",
+    "three": "^0.138.2"
+  }
+}

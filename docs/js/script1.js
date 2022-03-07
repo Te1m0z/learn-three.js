@@ -1,2 +1,0 @@
-"use strict";console.log("this is script 1");var a=new Object({a:1});
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNjcmlwdDEuanMiXSwibmFtZXMiOlsiY29uc29sZSIsImxvZyIsImEiLCJPYmplY3QiXSwibWFwcGluZ3MiOiJhQUFBQSxRQUFRQyxJQUFJLG9CQUNaLElBQUlDLEVBQUksSUFBSUMsT0FBTyxDQUFDRCxFQUFFIiwiZmlsZSI6InNjcmlwdDEuanMiLCJzb3VyY2VzQ29udGVudCI6WyJjb25zb2xlLmxvZygndGhpcyBpcyBzY3JpcHQgMScpXHJcbnZhciBhID0gbmV3IE9iamVjdCh7YToxfSkiXX0=
