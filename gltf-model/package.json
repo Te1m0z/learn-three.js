@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "parcel src/index.html",
+    "start": "parcel src/index.html --port=8089",
     "build": "parcel build src/index.html"
   },
   "dependencies": {

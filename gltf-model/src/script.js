@@ -3,60 +3,81 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'dat.gui';
 
-const div = document.getElementById('preview');
 
+let ww = window.innerWidth,
+    wh = window.innerHeight,
+    Mesh,
+    mixer = new THREE.AnimationMixer(Mesh);
 
-const renderer = new THREE.WebGLRenderer();
-const camera = new THREE.PerspectiveCamera(40, div.clientWidth / div.clientHeight, 1, 100);
+const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+});
+const camera = new THREE.PerspectiveCamera(75, ww / wh, 0.1, 500);
 const scene = new THREE.Scene();
-// const controls = new OrbitControls(camera, renderer.domElement);
 const clock = new THREE.Clock();
+const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new GLTFLoader();
 
+let gr = new THREE.Group();
 
-let Mesh;
-let light;
-let mixer = new THREE.AnimationMixer(Mesh);
-let dt;
 
 function init() {
+    scene.add(new THREE.AxesHelper(10));
     scene.background = new THREE.Color('grey');
-    camera.position.set(0, 0, 4);
+    camera.position.set(0.7, 0.7, 0.7);
 
-    // controls.minPolarAngle = 0.8;
-    // controls.maxPolarAngle = 2.5;
-    // controls.maxDistance = 3.5;
-    // controls.minDistance = 1.8;
-    renderer.setSize(div.clientWidth, div.clientHeight);
-    div.appendChild(renderer.domElement);
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 5;
+    renderer.shadowMap.enabled = true;
+
+    renderer.setSize(ww, wh);
+    document.body.appendChild(renderer.domElement);
 }
 
 function setLight() {
-    light = new THREE.AmbientLight(0xFFFFFF, 1); // soft white light
+    let light = new THREE.HemisphereLight(0xffeeb1, 0x080820, 3);
+    light.castShadow = true;
+    light.position.set(5, 5, 1);
     scene.add(light);
+    let spot = new THREE.SpotLight(0xffa95c, 1);
+    spot.angle = 10;
+    spot.castShadow = true;
+    spot.position.set(3,3,3);
+    scene.add(spot);
+    let amb = new THREE.DirectionalLight('white', 2);
+    amb.castShadow = true;
+    scene.add(amb)
 }
 
 function loadGLTF() {
-    loader.load('./book.gltf', (model) => {
-        Mesh = model.scene;
-        Mesh.rotation.y = -1;
-        // mixer = new THREE.AnimationMixer(Mesh);
-        // mixer.clipAction(model.animations[1]).play();
-        scene.add(Mesh);
-    }, animate);
+    loader.load('./catapulta.gltf', (gltf) => {
+        Mesh = gltf.scene;
+        const box = new THREE.Box3().setFromObject(Mesh);
+        const center = box.getCenter(new THREE.Vector3());
+        gltf.scene.position.x += (gltf.scene.position.x - center.x);
+        gltf.scene.position.y += (gltf.scene.position.y - center.y);
+        gltf.scene.position.z += (gltf.scene.position.z - center.z);
+        Mesh.castShadow = true;
+        mixer = new THREE.AnimationMixer(Mesh);
+        mixer.clipAction(gltf.animations[1]).play();
+        // Mesh.children[0].traverse(n => {
+        //     if (n.isMesh) {
+        //         n.castShadow = true;
+        //         n.receiveShadow = true;
+        //     }
+        // });
+        gr.add(Mesh);
+    }, (xhr) => {
+        console.log((xhr.loaded / xhr.total * 100) + '% model loaded');
+        animate();
+    }, (err) => {
+        console.log(err);
+    });
 }
 
-var amplitude = 10;
-var period = 200;
-let curRat;
-let dir = 'left';
-
 function animate() {
-    if (Mesh && Mesh.rotation) {
-        Mesh.rotation.y -= 0.0007;
-    }
-    // mixer.update(clock.getDelta());
-    // controls.update();
+    mixer.update(clock.getDelta());
+    controls.update();
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
