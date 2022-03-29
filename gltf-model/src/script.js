@@ -22,27 +22,34 @@ let gr = new THREE.Group();
 
 
 function init() {
-    scene.add(new THREE.AxesHelper(10));
-    scene.background = new THREE.Color('grey');
-    camera.position.set(0.7, 0.7, 0.7);
-
+    // scene.add(new THREE.AxesHelper(10));
+    scene.background = new THREE.Color('white');
+    camera.position.set(1, 1, 1);
+    scene.environment = 'city';
     renderer.toneMapping = THREE.ReinhardToneMapping;
-    renderer.toneMappingExposure = 5;
+    renderer.toneMappingExposure = 7;
     renderer.shadowMap.enabled = true;
-
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setSize(ww, wh);
     document.body.appendChild(renderer.domElement);
 }
 
 function setLight() {
-    let light = new THREE.HemisphereLight(0xffeeb1, 0x080820, 3);
+    let light = new THREE.DirectionalLight();
+    light.intensity = 1;
     light.castShadow = true;
-    light.position.set(5, 5, 1);
+    light.shadow.mapSize.width = 512;
+    light.shadow.mapSize.height = 512;
+    light.shadow.camera.near = 0.5;
+    light.shadow.camera.far = 500
+    light.position.set(3, 5, 0);
     scene.add(light);
-    let spot = new THREE.SpotLight(0xffa95c, 1);
-    spot.angle = 10;
+    let spot = new THREE.SpotLight();
+    spot.intensity = 0.5;
+    spot.angle = 1;
     spot.castShadow = true;
-    spot.position.set(3,3,3);
+    spot.penumbra = 1;
+    spot.position.set(10, 15, 10);
     scene.add(spot);
     let amb = new THREE.DirectionalLight('white', 2);
     amb.castShadow = true;
@@ -50,7 +57,7 @@ function setLight() {
 }
 
 function loadGLTF() {
-    loader.load('./catapulta.gltf', (gltf) => {
+    loader.load('model_test1.glb', (gltf) => {
         Mesh = gltf.scene;
         const box = new THREE.Box3().setFromObject(Mesh);
         const center = box.getCenter(new THREE.Vector3());
@@ -60,13 +67,7 @@ function loadGLTF() {
         Mesh.castShadow = true;
         mixer = new THREE.AnimationMixer(Mesh);
         mixer.clipAction(gltf.animations[1]).play();
-        // Mesh.children[0].traverse(n => {
-        //     if (n.isMesh) {
-        //         n.castShadow = true;
-        //         n.receiveShadow = true;
-        //     }
-        // });
-        gr.add(Mesh);
+        scene.add(Mesh);
     }, (xhr) => {
         console.log((xhr.loaded / xhr.total * 100) + '% model loaded');
         animate();
