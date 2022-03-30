@@ -35,14 +35,9 @@ function init() {
 }
 
 function setLight() {
-    let light = new THREE.DirectionalLight();
+    let light = new THREE.AmbientLight();
     light.intensity = 1;
     light.castShadow = true;
-    light.shadow.mapSize.width = 512;
-    light.shadow.mapSize.height = 512;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500
-    light.position.set(3, 5, 0);
     scene.add(light);
     let spot = new THREE.SpotLight();
     spot.intensity = 0.5;
