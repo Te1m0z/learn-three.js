@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import * as dat from 'dat.gui';
-
+import { GUI } from 'dat.gui'
 
 let ww = window.innerWidth,
     wh = window.innerHeight,
@@ -18,11 +17,9 @@ const clock = new THREE.Clock();
 const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new GLTFLoader();
 
-let gr = new THREE.Group();
-
 
 function init() {
-    // scene.add(new THREE.AxesHelper(10));
+    scene.add(new THREE.AxesHelper(100));
     scene.background = new THREE.Color('white');
     camera.position.set(1, 1, 1);
     scene.environment = 'city';
@@ -34,34 +31,38 @@ function init() {
     document.body.appendChild(renderer.domElement);
 }
 
+let light, spot, amb;
+
 function setLight() {
-    let light = new THREE.AmbientLight();
+    light = new THREE.AmbientLight();
     light.intensity = 1;
-    light.castShadow = true;
+    // light.castShadow = true;
     scene.add(light);
-    let spot = new THREE.SpotLight();
+
+    spot = new THREE.SpotLight();
     spot.intensity = 0.5;
     spot.angle = 1;
     spot.castShadow = true;
     spot.penumbra = 1;
     spot.position.set(10, 15, 10);
     scene.add(spot);
-    let amb = new THREE.DirectionalLight('white', 2);
+    
+    amb = new THREE.DirectionalLight('white', 2);
     amb.castShadow = true;
     scene.add(amb)
 }
 
 function loadGLTF() {
-    loader.load('model_test1.glb', (gltf) => {
+    loader.load('catapulta.gltf', (gltf) => {
         Mesh = gltf.scene;
         const box = new THREE.Box3().setFromObject(Mesh);
         const center = box.getCenter(new THREE.Vector3());
         gltf.scene.position.x += (gltf.scene.position.x - center.x);
-        gltf.scene.position.y += (gltf.scene.position.y - center.y);
         gltf.scene.position.z += (gltf.scene.position.z - center.z);
         Mesh.castShadow = true;
         mixer = new THREE.AnimationMixer(Mesh);
-        mixer.clipAction(gltf.animations[1]).play();
+        mixer.clipAction(gltf.animations[1]).play(); 
+        addGui(gltf.animations);
         scene.add(Mesh);
     }, (xhr) => {
         console.log((xhr.loaded / xhr.total * 100) + '% model loaded');
@@ -78,7 +79,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-function addGui() {
+function addGui(anims) {
     class ColorGUIHelper {
         constructor(object, prop) {
             this.object = object;
@@ -92,12 +93,35 @@ function addGui() {
         }
     }
 
-    const gui = new dat.GUI();
-    gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-    gui.add(light, 'intensity', 0, 2, 0.01);
+    const gui = new GUI();
+    const lightFoler = gui.addFolder('Light');
+    const animFoler = gui.addFolder('Animation');
+    const ambFolder  = lightFoler.addFolder('AmbientLight');
+    const spotFolder = lightFoler.addFolder('SpotLight');
+    const dirFolder  = lightFoler.addFolder('DirectionalLight');
+    
+    ambFolder.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
+    spotFolder.addColor(new ColorGUIHelper(spot, 'color'), 'value').name('color');
+    dirFolder.addColor(new ColorGUIHelper(amb, 'color'), 'value').name('color');
+
+    ambFolder.add(light, 'intensity', 0, 10, 0.1);
+    ambFolder.add(light.position, 'x', -20, 20, 1);
+    ambFolder.add(light.position, 'y', -20, 20, 1);
+    ambFolder.add(light.position, 'z', -20, 20, 1);
+
+    spotFolder.add(spot, 'intensity', 0, 10, 0.1);
+    spotFolder.add(spot.position, 'x', -20, 20, 1);
+    spotFolder.add(spot.position, 'y', -20, 20, 1);
+    spotFolder.add(spot.position, 'z', -20, 20, 1);
+
+    dirFolder.add(amb, 'intensity', 0, 10, 0.1);
+    dirFolder.add(amb.position, 'x', -20, 20, 1);
+    dirFolder.add(amb.position, 'y', -20, 20, 1);
+    dirFolder.add(amb.position, 'z', -20, 20, 1);
+
+    animFoler.add(mixer.clipAction(anims[1]), 'paused', true, false);
 }
 
 init();
 setLight();
 loadGLTF();
-// addGui();
